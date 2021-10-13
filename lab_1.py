@@ -2,8 +2,8 @@ from nltk import sent_tokenize, word_tokenize,download
 from nltk.corpus import stopwords
 
 # Example 3
-#download ('punkt')
-#download ('stopwords')
+# download ('punkt')
+# download ('stopwords')
 
 
 # Example 1
@@ -26,23 +26,44 @@ from nltk.corpus import stopwords
 # without_stop_words = [word for word in words if not word in stop_words]
 # print(without_stop_words)
 
+def write_file(filename, text_list):
+    file = open(filename, 'w')
+    for item in text_list:
+        file.write(str(item))
+        file.write('\n')
+    file.close()
+
+
 # Graphematic analyzer (Task 2)
 f = open('sample_text.txt', 'r')
 
 text = f.read()
-print("Открыт файл sample_text.txt... Что для вас сделать?\n1 - разбить текст на предложения;\n2 - разбить текст на слова\n3 - разбить текст на слова, удалив стоп-слова")
+f.close()
+print("Открыт файл sample_text.txt... Что для вас сделать?"
+      "\n1 - разбить текст на предложения;\n2 - разбить текст на слова по предложениям"
+      "\n3 - разбить текст на слова по предложениям, удалив стоп-слова")
 choice = int(input())
 if choice == 1:
     print('\nМинуту, сейчас сделаю...')
-    print(sent_tokenize(text))
+    write_file('sent_tok_out.txt', sent_tokenize(text))
+    print('\nГотово! смотрите файл sent_tok_out.txt')
 elif choice == 2:
     print('\nМинуту, сейчас сделаю...')
-    print(word_tokenize(text))
+    sent_tok_txt = sent_tokenize(text)
+    for i in range(0, len(sent_tok_txt)):
+        sent_tok_txt[i] = word_tokenize(sent_tok_txt[i])
+    write_file('sent_word_tok_out.txt', sent_tok_txt)
+    print('\nГотово! смотрите файл sent_word_tok_out.txt')
 elif choice == 3:
     print('\nМинуту, сейчас сделаю...')
     stop_words = set(stopwords.words('russian'))
-    words = word_tokenize(text)
-    print([word for word in words if not word in stop_words])
+    sent_tok_txt = sent_tokenize(text)
+    out_text = []
+    for i in range(0, len(sent_tok_txt)):
+        sent_tok_txt[i] = word_tokenize(sent_tok_txt[i])
+        temp = [word for word in sent_tok_txt[i] if not word in stop_words]
+        out_text.append(temp)
+    write_file('sent_word_tok_wout_stop_out.txt', out_text)
+    print('\nГотово! смотрите файл sent_word_tok_wout_stop_out.txt')
 else:
     print('\nТакой команды я не знаю ＞﹏＜')
-f.close()
