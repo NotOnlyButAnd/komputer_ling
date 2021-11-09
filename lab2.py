@@ -163,7 +163,7 @@ while flag:
             print(f"Слово {word}. Падежируем...")
             analysis_word = morph.parse(word)[0]
             for i in range(0, 6):
-                print(analysis_word.make_agree_with_number(i).word)
+                print(f"Число {i} - {analysis_word.make_agree_with_number(i).word}")
         else:
             print('\nТакой команды я не знаю :-(')
         flag = False
